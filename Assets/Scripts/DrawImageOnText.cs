@@ -52,4 +52,16 @@ public class DrawImageOnText : MonoBehaviour {
         return OpenCvSharp.Unity.MatToTexture(mat);
     }
 
+    private Texture2D CreateTexture(int width, int height, Color defaultColor = default) {
+        Texture2D texture2D = new Texture2D(width, height, TextureFormat.RGB24, false);
+
+        for (int y = 0; y < texture2D.height; y++) {
+            for (int x = 0; x < texture2D.width; x++) {
+                texture2D.SetPixel(x, y, defaultColor);
+            }
+        }
+
+        return texture2D;
+    }
+
 }
