@@ -11,13 +11,13 @@ public class DrawImageOnText : MonoBehaviour {
         Mat srcMat = TextureToMat(srcTexture);
 
         // 書き込む文字列
-        string text = "Hello";
+        string text = "Hello World";
         // 書き込み位置
-        Point point = new Point(0, 50);
+        Point point = new Point(0, 10);
         // フォントスタイル
         HersheyFonts fontStyle = HersheyFonts.HersheyPlain;
         // フォントサイズ
-        int fontScale = 2;
+        int fontScale = 1;
         // フォントカラー
         Scalar fontColor = new Scalar(255, 255, 255);
         // フォントの太さ
@@ -25,7 +25,7 @@ public class DrawImageOnText : MonoBehaviour {
         // フォントの線の種類
         LineTypes lineTypes = LineTypes.AntiAlias;
 
-
+        // 文字列書き込み
         srcMat.PutText(
             text,
             point,
@@ -35,7 +35,6 @@ public class DrawImageOnText : MonoBehaviour {
             fontWeight,
             lineTypes
         );
-
 
         Texture2D dstTexture = MatToTexture(srcMat);
         GetComponent<RawImage>().texture = dstTexture;
