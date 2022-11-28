@@ -7,6 +7,11 @@ using System.Drawing;
 
 public class DrawImageOnText : MonoBehaviour {
 
+    /*
+     * https://gist.github.com/grimmdev/e19464a7e67aa4ff53cc
+     * https://maywork.net/computer/icatchgen/
+     */
+
     private void Start() {
         int width = 500;
         int height = 500;
