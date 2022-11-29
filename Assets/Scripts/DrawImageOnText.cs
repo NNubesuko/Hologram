@@ -11,6 +11,11 @@ public class DrawImageOnText : MonoBehaviour {
     /*
      * https://gist.github.com/grimmdev/e19464a7e67aa4ff53cc
      * https://maywork.net/computer/icatchgen/
+     *
+     * 「svg+opencv トリミング」: https://www.google.com/search?q=svg%2Bopencv+%E3%83%88%E3%83%AA%E3%83%9F%E3%83%B3%E3%82%B0&rlz=1C1TKQJ_jaJP1028JP1028&biw=1920&bih=969&sxsrf=ALiCzsbbWYd4_Y6582dCYTfV_AUInHByEg%3A1669705570629&ei=Yq-FY86AJvCO2roPirepoAk&ved=0ahUKEwjOuar76dL7AhVwh1YBHYpbCpQQ4dUDCA8&uact=5&oq=svg%2Bopencv+%E3%83%88%E3%83%AA%E3%83%9F%E3%83%B3%E3%82%B0&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQogQyBQgAEKIEMgUIABCiBDIFCAAQogQ6CggAEEcQ1gQQsAM6BAgjECc6BwgAEAQQgAQ6BwgjELACECc6BwgAEIAEEA06BggAEB4QDUoECEEYAEoECEYYAFCpC1jdI2DkJWgCcAB4AIABcYgB7QaSAQM1LjSYAQCgAQHIAQrAAQE&sclient=gws-wiz-serp#imgrc=ZL1UGlZRG818OM
+     * マスクを利用した画像処理: https://pystyle.info/opencv-mask-image/
+     * 画像をNumpy配列へ変換: https://blog.shikoan.com/using-numpy-array-in-csharp/
+     * OpenCVマスク操作: https://qiita.com/kotai2003/items/4b3f48db9ef8ae503fa1
      */
 
     private void Start() {
