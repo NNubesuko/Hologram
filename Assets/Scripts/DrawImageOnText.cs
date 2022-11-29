@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,11 +14,97 @@ public class DrawImageOnText : MonoBehaviour {
      */
 
     private void Start() {
-        int width = 500;
-        int height = 500;
-        using (Bitmap bmp = new Bitmap(width, height)) {
+        // 渡した文字列を描画したテクスチャを作成
+        Texture2D textTexture = CreateTextureWithTextDrawing(
+            1024,
+            1024,
+            Brushes.Black,
+            50,
+            new FontFamily("游明朝"),
+            Brushes.White,
+            "ああああああああああいいいいいいいいいいうううう"
+        );
+
+        Mat textTextureToMat = TextureToMat(textTexture);
+        GetComponent<RawImage>().texture = textTexture;
+    }
+
+    private Texture2D CreateTextureWithTextDrawing(
+        int width,
+        int height,
+        Brush backgroundColor,
+        int fontSize,
+        FontFamily fontFamily,
+        Brush fontColor,
+        string drawText
+    ) {
+
+        using (Bitmap bitmap = new Bitmap(width, height)) {
+            
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap))
+            using (System.Drawing.Font font = new System.Drawing.Font(fontFamily, fontSize)) {
+
+                Rectangle backgroundRect = new Rectangle(0, 0, width, height);
+                graphics.FillRectangle(backgroundColor, backgroundRect);
+                graphics.DrawString(drawText, font, fontColor, backgroundRect);
+
+            }
+
+            return BitmapToTexture2D(bitmap);
+
         }
-        // Texture2D srcTexture = ReadTexture2D("image");
+
+        throw new Exception("テクスチャを生成できませんでした");
+    }
+
+    private Texture2D BitmapToTexture2D(Bitmap bitmap) {
+        Texture2D texture2D = new Texture2D(bitmap.Width, bitmap.Height);
+
+        for (int y = 0; y < bitmap.Height; y++) {
+            for (int x = 0; x < bitmap.Width; x++) {
+                System.Drawing.Color color = bitmap.GetPixel(x, y);
+                // bitmap.Width - 1 - x で文字が反転するため、ホログラムで使用できるかの可能性がある
+                texture2D.SetPixel(
+                    x,
+                    bitmap.Height - 1 - y,
+                    new Color32(color.R, color.G, color.B, color.A)
+                );
+            }
+        }
+
+        texture2D.Apply();
+        return texture2D;
+    }
+
+    private Mat TextureToMat(Texture2D texture2D) {
+        return OpenCvSharp.Unity.TextureToMat(texture2D);
+    }
+
+
+
+    // private Texture2D ReadTexture2D(string imageName) {
+    //     return (Texture2D)Resources.Load($"Textures/{imageName}") as Texture2D;
+    // }
+
+    // private Texture2D MatToTexture(Mat mat) {
+    //     return OpenCvSharp.Unity.MatToTexture(mat);
+    // }
+
+    // private Texture2D CreateTexture(int width, int height, UnityEngine.Color defaultColor = default) {
+    //     Texture2D texture2D = new Texture2D(width, height, TextureFormat.RGB24, false);
+
+    //     for (int y = 0; y < texture2D.height; y++) {
+    //         for (int x = 0; x < texture2D.width; x++) {
+    //             texture2D.SetPixel(x, y, defaultColor);
+    //         }
+    //     }
+
+    //     return texture2D;
+    // }
+
+}
+
+// Texture2D srcTexture = ReadTexture2D("image");
         // Mat srcMat = TextureToMat(srcTexture);
 
         // // 書き込む文字列
@@ -48,96 +135,3 @@ public class DrawImageOnText : MonoBehaviour {
 
         // Texture2D dstTexture = MatToTexture(srcMat);
         // GetComponent<RawImage>().texture = dstTexture;
-    }
-
-/*
-class Program
-{
-    <summary>画像にテキストを描画</summary>
-    <param name="fileName">出力する画像ファイルのパス</param>
-    <param name="drawText">描画するテキスト</param>
-    static void drawTextToImageFile(string fileName, string drawText)
-    {
-        const int fontSize = 90;
-        const string fontFamily = "MS UI Gothic";
-        const int width = 800;  // 画像の幅
-        const int height = 600; // 画像の高さ
-        const int margin = 64; // マージン
-
-        using(Bitmap bmp = new Bitmap(width, height))
-        {
-            using(Graphics g = Graphics.FromImage(bmp))
-            using(Font fnt = new Font(fontFamily, fontSize))
-            using(Pen bluePen = new Pen(Color.DeepSkyBlue, margin))
-            using(Pen grayPen = new Pen(Color.Gainsboro, margin))
-            {
-                // 背景
-                Rectangle bgRect = new Rectangle(0, 0, width, height);
-                g.FillRectangle(Brushes.White, bgRect);
-
-                // 枠
-                grayPen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round; 
-                Rectangle bdsRect = new Rectangle(margin+6, margin+6, width-margin*2, height-margin*2);
-                g.DrawRectangle(grayPen, bdsRect);
-                bluePen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round; 
-                Rectangle bdRect = new Rectangle(margin, margin, width-margin*2, height-margin*2);
-                g.DrawRectangle(bluePen, bdRect);
-                g.FillRectangle(Brushes.DeepSkyBlue, bdRect);
-
-                // テキスト
-                g.DrawString(drawText, fnt, Brushes.White, bdRect);
-            }
-
-            bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
-        }
-
-    }
-    <summary>利用法</summary>
-    static void Usage()
-    {
-        Console.WriteLine("icathcgen.exe ファイル名 文字列");
-    }
-    <summary>エントリーポイント</summary>
-    static void Main(string[] args)
-    {
-        if (args.Length < 2)
-        {
-            Usage();
-            Environment.Exit(0);
-        }
-
-        string fileName = args[0];
-        string drawText = args[1];
-
-        Console.WriteLine("{0} {1}", fileName, drawText);
-        drawTextToImageFile(fileName, drawText);
-    } // Main end
-} // class end
-*/
-
-
-    private Texture2D ReadTexture2D(string imageName) {
-        return (Texture2D)Resources.Load($"Textures/{imageName}") as Texture2D;
-    }
-
-    private Mat TextureToMat(Texture2D texture2D) {
-        return OpenCvSharp.Unity.TextureToMat(texture2D);
-    }
-
-    private Texture2D MatToTexture(Mat mat) {
-        return OpenCvSharp.Unity.MatToTexture(mat);
-    }
-
-    private Texture2D CreateTexture(int width, int height, UnityEngine.Color defaultColor = default) {
-        Texture2D texture2D = new Texture2D(width, height, TextureFormat.RGB24, false);
-
-        for (int y = 0; y < texture2D.height; y++) {
-            for (int x = 0; x < texture2D.width; x++) {
-                texture2D.SetPixel(x, y, defaultColor);
-            }
-        }
-
-        return texture2D;
-    }
-
-}
