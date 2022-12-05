@@ -6,13 +6,63 @@ using UnityEngine.UI;
 using OpenCvSharp;
 using System.Drawing;
 
+public class CreateTexture {
+
+    public static Texture2D Create(
+        int width,
+        int height,
+        Brush backgroundColor,
+        int fontSize,
+        FontFamily fontFamily,
+        Brush fontColor,
+        string drawText
+    ) {
+        using (Bitmap bitmap = new Bitmap(width, height)) {
+            
+            using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap))
+            using (System.Drawing.Font font = new System.Drawing.Font(fontFamily, fontSize)) {
+
+                Rectangle backgroundRect = new Rectangle(0, 0, width, height);
+                graphics.FillRectangle(backgroundColor, backgroundRect);
+                graphics.DrawString(drawText, font, fontColor, backgroundRect);
+
+            }
+
+            return BitmapToTexture2D(bitmap);
+
+        }
+
+        throw new Exception("テクスチャを生成できませんでした");
+    }
+
+    private static Texture2D BitmapToTexture2D(Bitmap bitmap) {
+        Texture2D texture2D = new Texture2D(bitmap.Width, bitmap.Height);
+
+        for (int y = 0; y < bitmap.Height; y++) {
+            for (int x = 0; x < bitmap.Width; x++) {
+                System.Drawing.Color color = bitmap.GetPixel(x, y);
+                // bitmap.Width - 1 - x で文字が反転するため、ホログラムで使用できるかの可能性がある
+                texture2D.SetPixel(
+                    x,
+                    bitmap.Height - 1 - y,
+                    new Color32(color.R, color.G, color.B, color.A)
+                );
+            }
+        }
+
+        texture2D.Apply();
+        return texture2D;
+    }
+
+}
+
 public class DrawImageOnText : MonoBehaviour {
 
     /*
      * https://gist.github.com/grimmdev/e19464a7e67aa4ff53cc
      * https://maywork.net/computer/icatchgen/
      *
-     * 「svg+opencv トリミング」: https://www.google.com/search?q=svg%2Bopencv+%E3%83%88%E3%83%AA%E3%83%9F%E3%83%B3%E3%82%B0&rlz=1C1TKQJ_jaJP1028JP1028&biw=1920&bih=969&sxsrf=ALiCzsbbWYd4_Y6582dCYTfV_AUInHByEg%3A1669705570629&ei=Yq-FY86AJvCO2roPirepoAk&ved=0ahUKEwjOuar76dL7AhVwh1YBHYpbCpQQ4dUDCA8&uact=5&oq=svg%2Bopencv+%E3%83%88%E3%83%AA%E3%83%9F%E3%83%B3%E3%82%B0&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQogQyBQgAEKIEMgUIABCiBDIFCAAQogQ6CggAEEcQ1gQQsAM6BAgjECc6BwgAEAQQgAQ6BwgjELACECc6BwgAEIAEEA06BggAEB4QDUoECEEYAEoECEYYAFCpC1jdI2DkJWgCcAB4AIABcYgB7QaSAQM1LjSYAQCgAQHIAQrAAQE&sclient=gws-wiz-serp#imgrc=ZL1UGlZRG818OM
+     * 「svg+opencv トリミング: https://www.google.com/search?q=svg%2Bopencv+%E3%83%88%E3%83%AA%E3%83%9F%E3%83%B3%E3%82%B0&rlz=1C1TKQJ_jaJP1028JP1028&biw=1920&bih=969&sxsrf=ALiCzsbbWYd4_Y6582dCYTfV_AUInHByEg%3A1669705570629&ei=Yq-FY86AJvCO2roPirepoAk&ved=0ahUKEwjOuar76dL7AhVwh1YBHYpbCpQQ4dUDCA8&uact=5&oq=svg%2Bopencv+%E3%83%88%E3%83%AA%E3%83%9F%E3%83%B3%E3%82%B0&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQogQyBQgAEKIEMgUIABCiBDIFCAAQogQ6CggAEEcQ1gQQsAM6BAgjECc6BwgAEAQQgAQ6BwgjELACECc6BwgAEIAEEA06BggAEB4QDUoECEEYAEoECEYYAFCpC1jdI2DkJWgCcAB4AIABcYgB7QaSAQM1LjSYAQCgAQHIAQrAAQE&sclient=gws-wiz-serp#imgrc=ZL1UGlZRG818OM
      * マスクを利用した画像処理: https://pystyle.info/opencv-mask-image/
      * 画像をNumpy配列へ変換: https://blog.shikoan.com/using-numpy-array-in-csharp/
      * OpenCVマスク操作: https://qiita.com/kotai2003/items/4b3f48db9ef8ae503fa1
@@ -27,7 +77,7 @@ public class DrawImageOnText : MonoBehaviour {
             50,
             new FontFamily("游明朝"),
             Brushes.White,
-            "ああああああああああいいいいいいいいいいうううう"
+            "ここに文章が入ります。ここに文章が入ります。ここに文章が入ります。ここに文章が入ります。"
         );
 
         Mat textTextureToMat = TextureToMat(textTexture);
@@ -43,7 +93,6 @@ public class DrawImageOnText : MonoBehaviour {
         Brush fontColor,
         string drawText
     ) {
-
         using (Bitmap bitmap = new Bitmap(width, height)) {
             
             using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap))
