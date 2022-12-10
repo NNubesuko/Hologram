@@ -8,21 +8,57 @@ using System.Drawing;
 
 public class CubeMain : MonoBehaviour {
 
+    [SerializeField] private RawImage rawImage;
+    [SerializeField] private int textureSize;
+    [SerializeField] private int fontSize;
+    [SerializeField, TextArea] private string text;
     private Material material;
 
+    private float rotateX = 0f;
+    private float rotateY = 0f;
+
     private void Awake() {
+        Attach();
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            Attach();
+        }
+
+        rotateX = normalizeAngle(rotateX + 0.1f, -180f, 180f);
+        rotateY = normalizeAngle(rotateY + 0.2f, -180f, 180f);
+        transform.rotation = Quaternion.Euler(rotateX, rotateY, 0f);
+    }
+
+    /*
+     * 生成したテクスチャをオブジェクトに付けるメソッド
+     */
+    private void Attach() {
         Texture2D textTexture = CreateTexture.Create(
-            1024,
-            1024,
-            Brushes.Black,
-            50,
+            textureSize,
+            textureSize,
+            Brushes.Transparent,
+            fontSize,
             new FontFamily("游明朝"),
-            Brushes.White,
-            "ここに文章が入ります。ここに文章が入ります。ここに文章が入ります。ここに文章が入ります。"
+            Brushes.Black,
+            text
         );
 
         material = GetComponent<Renderer>().material;
         material.SetTexture("_BaseMap", textTexture);
+        rawImage.texture = textTexture;
+    }
+
+    /*
+     * 角度を正規化するメソッド
+     */
+    private float normalizeAngle(float x, float min, float max) {
+        float cycle = max - min;
+        x = (x - min) % cycle + min;
+        if (x < min)
+            x += cycle;
+        return x;
     }
 
 }
