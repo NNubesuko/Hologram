@@ -12,6 +12,7 @@ public class CubeMain : MonoBehaviour {
     [SerializeField] private int textureSize;
     [SerializeField] private int fontSize;
     [SerializeField, TextArea] private string text;
+    [SerializeField] private float magnification;
     private Material material;
 
     private float rotateX = 0f;
@@ -26,8 +27,8 @@ public class CubeMain : MonoBehaviour {
             Attach();
         }
 
-        rotateX = normalizeAngle(rotateX + 0.1f, -180f, 180f);
-        rotateY = normalizeAngle(rotateY + 0.2f, -180f, 180f);
+        rotateX = normalizeAngle(rotateX + 0.1f * magnification, -180f, 180f);
+        rotateY = normalizeAngle(rotateY + 0.2f * magnification, -180f, 180f);
         transform.rotation = Quaternion.Euler(rotateX, rotateY, 0f);
     }
 
