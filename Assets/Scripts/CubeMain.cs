@@ -48,6 +48,8 @@ public class CubeMain : MonoBehaviour {
 
         material = GetComponent<Renderer>().material;
         material.SetTexture("_BaseMap", textTexture);
+
+        if (!rawImage) return;
         rawImage.texture = textTexture;
     }
 
