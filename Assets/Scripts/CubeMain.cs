@@ -32,6 +32,8 @@ public class CubeMain : MonoBehaviour {
         transform.rotation = Quaternion.Euler(rotateX, rotateY, 0f);
     }
 
+
+
     /*
      * 生成したテクスチャをオブジェクトに付けるメソッド
      */
