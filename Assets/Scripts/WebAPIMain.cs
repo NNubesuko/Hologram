@@ -24,12 +24,11 @@ public class WebAPIMain : MonoBehaviour {
         string jsonData = JsonUtility.ToJson(accessTokenJson);
 
         StartCoroutine(
-            webAPITest.WebRequest(
+            WebRequest(
                 accessTokenURL,
                 "POST",
                 jsonData,
-                "Content-Type",
-                "application/json"
+                new RequestHeader("Content-Type", "application/json")
             )
         );
     }
@@ -43,16 +42,14 @@ public class WebAPIMain : MonoBehaviour {
             RequestEmotionalAnalysis requestEmotionalAnalysis =
                 new RequestEmotionalAnalysis("私は悲しい");
             string jsonData = JsonUtility.ToJson(requestEmotionalAnalysis);
-            
+
             StartCoroutine(
                 WebRequest(
                     apiBaseURL + "nlp/v1/sentiment",
                     "POST",
                     jsonData,
-                    "Content-Type",
-                    "application/json;charset=UTF-8",
-                    "Authorization",
-                    "Bearer " + responceAccessToken.access_token
+                    new RequestHeader("Content-Type", "application/json;charset=UTF-8"),
+                    new RequestHeader("Authorization", "Bearer " + responceAccessToken.access_token)
                 )
             );
         }
@@ -61,23 +58,34 @@ public class WebAPIMain : MonoBehaviour {
     public IEnumerator WebRequest(
         string url,
         string method,
-        string jsonData,
-        string headerName1,
-        string headerValue1,
-        string headerName2,
-        string headerValue2
+        string sendJsonData,
+        params RequestHeader[] headers
     ) {
         using (UnityWebRequest request = new UnityWebRequest(url, method)) {
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(sendJsonData);
             request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            request.SetRequestHeader(headerName1, headerValue1);
-            request.SetRequestHeader(headerName2, headerValue2);
+
+            foreach (RequestHeader requestHeader in headers) {
+                request.SetRequestHeader(requestHeader.Name, requestHeader.Value);
+            }
 
             yield return request.SendWebRequest();
 
             Debug.Log(request.downloadHandler.text);
         }
+    }
+
+}
+
+public class RequestHeader {
+
+    public string Name { get; private set; }
+    public string Value { get; private set; }
+
+    public RequestHeader(string name, string value) {
+        Name = name;
+        Value = value;
     }
 
 }
