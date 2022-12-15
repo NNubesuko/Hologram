@@ -50,6 +50,7 @@ public class CreateTexture {
             }
         }
 
+        texture2D.filterMode = FilterMode.Point;
         texture2D.Apply();
         return texture2D;
     }
