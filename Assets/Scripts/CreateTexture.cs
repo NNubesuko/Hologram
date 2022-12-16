@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using OpenCvSharp;
 using System.Drawing;
 
+/*
+ * テクスチャを生成するクラス
+ */
 public class CreateTexture {
 
     public static Texture2D Create(
@@ -28,6 +31,7 @@ public class CreateTexture {
 
             }
 
+            // ビットマップでは、オブジェクトに割り当てられないため、テスクチャに変換する
             return BitmapToTexture2D(bitmap);
 
         }
@@ -35,6 +39,9 @@ public class CreateTexture {
         throw new Exception("テクスチャを生成できませんでした");
     }
 
+    /*
+     * ビットマップからテクスチャに変換するメソッド
+     */
     private static Texture2D BitmapToTexture2D(Bitmap bitmap) {
         Texture2D texture2D = new Texture2D(bitmap.Width, bitmap.Height);
 
@@ -50,7 +57,6 @@ public class CreateTexture {
             }
         }
 
-        texture2D.filterMode = FilterMode.Point;
         texture2D.Apply();
         return texture2D;
     }
