@@ -15,7 +15,9 @@ public class CotohaAccessToken : MonoBehaviour {
     private const string clientId = "3Tu4k9hZoI0m6gHyYkHjJAXpyInTcrxN";
     private const string clientSecret = "NoKKCOb72cfOIH9l";
 
-    // アクセストークンをWebAPIに要求するメソッド
+    /*
+     * アクセストークンをWebAPIに要求するメソッド
+     */
     public void RequestAccessToken() {
         TimeSpan now = DateTime.Now.TimeOfDay;
         // 現在時刻が有効期限日に達していなければ、メソッドの処理を終了する
@@ -26,13 +28,13 @@ public class CotohaAccessToken : MonoBehaviour {
         // アクセストークンを更新する必要があるため、現在のアクセストークンを無効であることにする
         validAccessToken = false;
 
-        string jsonData = CreateRequestAccessTokenJson(grantType, clientId, clientSecret);
+        string sendJsonData = CreateRequestAccessTokenJson(grantType, clientId, clientSecret);
 
         StartCoroutine(
             WebAPIHandler.WebRequest(
                 accessTokenURL,
                 UnityWebRequest.kHttpVerbPOST,
-                jsonData,
+                sendJsonData,
                 ResponceAccessToken,
                 new RequestHeader("Content-Type", "application/json")
             )
