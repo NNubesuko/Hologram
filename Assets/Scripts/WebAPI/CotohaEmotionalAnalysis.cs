@@ -7,26 +7,13 @@ using UnityEngine.Networking;
 
 public class CotohaEmotionalAnalysis : MonoBehaviour {
 
-    [SerializeField] private GameAdmin gameAdmin;
-
-    private CotohaAccessToken cotohaAccessToken;
     private const string url = "https://api.ce-cotoha.com/api/dev/nlp/v1/sentiment";
-    private bool oneTime = true;
-
-    private void Start() {
-        cotohaAccessToken = gameAdmin.cotohaAccessToken;
-    }
-
-    private void Update() {
-        if (cotohaAccessToken.validAccessToken && oneTime) {
-            oneTime = false;
-
-            RequestEmotionalAnalysis("左の絵ってプロの絵じゃない");
-        }
-    }
 
     // 文章の感情分析結果をWebAPIに要求するメソッド
-    private void RequestEmotionalAnalysis(string textToAnalyze) {
+    public void RequestEmotionalAnalysis(
+        CotohaAccessToken cotohaAccessToken,
+        string textToAnalyze
+    ) {
         RequestEmotionalAnalysis requestEmotionalAnalysis =
             new RequestEmotionalAnalysis(textToAnalyze);
         string sendJsonData = JsonUtility.ToJson(requestEmotionalAnalysis);
