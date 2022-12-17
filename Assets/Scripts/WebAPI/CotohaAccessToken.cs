@@ -15,12 +15,8 @@ public class CotohaAccessToken : MonoBehaviour {
     private const string clientId = "3Tu4k9hZoI0m6gHyYkHjJAXpyInTcrxN";
     private const string clientSecret = "NoKKCOb72cfOIH9l";
 
-    private void Awake() {
-        RequestAccessToken();
-    }
-
     // アクセストークンをWebAPIに要求するメソッド
-    private void RequestAccessToken() {
+    public void RequestAccessToken() {
         TimeSpan now = DateTime.Now.TimeOfDay;
         // 現在時刻が有効期限日に達していなければ、メソッドの処理を終了する
         if (now < effectiveDate) return;
