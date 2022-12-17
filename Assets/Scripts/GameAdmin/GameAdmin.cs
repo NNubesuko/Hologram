@@ -10,7 +10,7 @@ public class GameAdmin : MonoBehaviour {
         cotohaAccessToken = GetComponent<CotohaAccessToken>();
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         // アクセストークンの要求
         cotohaAccessToken.RequestAccessToken();
     }
