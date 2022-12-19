@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class GameAdmin : MonoBehaviour {
 
-    public CotohaAccessToken cotohaAccessToken { get; private set; }
-    public CotohaEmotionalAnalysis cotohaEmotionalAnalysis { get; private set; }
-    private bool oneTime = true;
+    [SerializeField] private string inputString = "";
+
+    private CotohaAccessToken cotohaAccessToken;
+    private CotohaEmotionalAnalysis cotohaEmotionalAnalysis;
+
+    private bool isInput = false;
 
     private string sentiment = "";
 
@@ -17,6 +20,11 @@ public class GameAdmin : MonoBehaviour {
 
     // その他判定はUpdateで行う
     private void Update() {
+        // マイク入力完了に変更
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            isInput = true;
+        }
+
         // 感情分析結果を格納するクラスから、感情を取得
         ResponceEmotionalAnalysis responceEmotionalAnalysis =
             cotohaEmotionalAnalysis.responceEmotionalAnalysis;
@@ -34,13 +42,13 @@ public class GameAdmin : MonoBehaviour {
         cotohaAccessToken.RequestAccessToken();
 
         // WebAPIに短時間で複数回要求してしまうと、無効なやり取りになってしまうため、一度だけ実行させる
-        if (cotohaAccessToken.validAccessToken && oneTime) {
-            oneTime = false;
+        if (cotohaAccessToken.validAccessToken && isInput) {
+            isInput = false;
 
             // 渡された文章の感情分析
             cotohaEmotionalAnalysis.RequestEmotionalAnalysis(
                 cotohaAccessToken,
-                "どちらの絵も上手くない"
+                inputString
             );
         }
     }
