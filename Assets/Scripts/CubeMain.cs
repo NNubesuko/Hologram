@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using OpenCvSharp;
 using System.Drawing;
 using KataokaLib.System;
 
@@ -28,6 +27,7 @@ public class CubeMain : MonoBehaviour {
     private void Update() {
         // ゲーム開始時に一度だけ実行するメソッド
         // その後は、渡した条件式を通れば一度だけ実行される
+        // todo: マイク入力完了に変更
         methodUtility.OneTimeMethod(
             Attach,
             Input.GetKeyDown(KeyCode.Return)

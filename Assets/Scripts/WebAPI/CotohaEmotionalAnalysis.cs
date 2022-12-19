@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
+using System.Threading.Tasks;
+
 public class CotohaEmotionalAnalysis : MonoBehaviour {
 
     public ResponceEmotionalAnalysis responceEmotionalAnalysis { get; private set; } = null;

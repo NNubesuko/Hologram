@@ -20,7 +20,7 @@ public class GameAdmin : MonoBehaviour {
 
     // その他判定はUpdateで行う
     private void Update() {
-        // マイク入力完了に変更
+        // todo: マイク入力完了に変更
         if (Input.GetKeyDown(KeyCode.Return)) {
             isInput = true;
         }
