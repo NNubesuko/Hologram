@@ -57,7 +57,6 @@ public class CreateTexture {
             }
         }
 
-        texture2D.Apply();
         return texture2D;
     }
 
