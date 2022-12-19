@@ -1,10 +1,9 @@
 using System;
+using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-using System.Drawing;
 using KataokaLib.System;
 
 public class CubeMain : MonoBehaviour {
@@ -34,8 +33,8 @@ public class CubeMain : MonoBehaviour {
             Input.GetKeyDown(KeyCode.Return)
         );
 
-        rotateX = normalizeAngle(rotateX + 0.1f * magnification, -180f, 180f);
-        rotateY = normalizeAngle(rotateY + 0.2f * magnification, -180f, 180f);
+        rotateX = normalizeAngle(rotateX + 0.1f * magnification * Time.deltaTime, -180f, 180f);
+        rotateY = normalizeAngle(rotateY + 0.2f * magnification * Time.deltaTime, -180f, 180f);
         transform.rotation = Quaternion.Euler(rotateX, rotateY, 0f);
     }
 

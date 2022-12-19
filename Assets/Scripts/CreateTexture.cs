@@ -1,10 +1,10 @@
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using OpenCvSharp;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 /*
  * テクスチャを生成するクラス
@@ -43,21 +43,17 @@ public class CreateTexture {
      * ビットマップからテクスチャに変換するメソッド
      */
     private static Texture2D BitmapToTexture2D(Bitmap bitmap) {
-        Texture2D texture2D = new Texture2D(bitmap.Width, bitmap.Height);
-
-        for (int y = 0; y < bitmap.Height; y++) {
-            for (int x = 0; x < bitmap.Width; x++) {
-                System.Drawing.Color color = bitmap.GetPixel(x, y);
-                // bitmap.Width - 1 - x で文字が反転するため、ホログラムで使用できるかの可能性がある
-                texture2D.SetPixel(
-                    x,
-                    bitmap.Height - 1 - y,
-                    new Color32(color.R, color.G, color.B, color.A)
-                );
-            }
+        using (MemoryStream ms = new MemoryStream()) {
+            bitmap.Save(ms, ImageFormat.Png);
+            byte[] buffer = new byte[ms.Length];
+            ms.Position = 0;
+            ms.Read(buffer, 0, buffer.Length);
+            Texture2D t = new Texture2D(1, 1);
+            t.LoadImage(buffer);
+            return t;
         }
 
-        return texture2D;
+        throw new Exception("テクスチャに変換できませんでした");
     }
 
 }
