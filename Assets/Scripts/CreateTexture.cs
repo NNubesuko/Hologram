@@ -48,9 +48,10 @@ public class CreateTexture {
             byte[] buffer = new byte[ms.Length];
             ms.Position = 0;
             ms.Read(buffer, 0, buffer.Length);
-            Texture2D t = new Texture2D(1, 1);
-            t.LoadImage(buffer);
-            return t;
+            
+            Texture2D texture2D = new Texture2D(1, 1);
+            texture2D.LoadImage(buffer);
+            return texture2D;
         }
 
         throw new Exception("テクスチャに変換できませんでした");
