@@ -8,11 +8,27 @@ public class GameAdmin : MonoBehaviour {
     public CotohaEmotionalAnalysis cotohaEmotionalAnalysis { get; private set; }
     private bool oneTime = true;
 
+    private string sentiment = "";
+
     private void Awake() {
         cotohaAccessToken = GetComponent<CotohaAccessToken>();
         cotohaEmotionalAnalysis = GetComponent<CotohaEmotionalAnalysis>();
     }
 
+    // その他判定はUpdateで行う
+    private void Update() {
+        // 感情分析結果を格納するクラスから、感情を取得
+        ResponceEmotionalAnalysis responceEmotionalAnalysis =
+            cotohaEmotionalAnalysis.responceEmotionalAnalysis;
+        if (responceEmotionalAnalysis != null) {
+            EmotionalAnalysisResult emotionalAnalysisResult = responceEmotionalAnalysis.result;
+            sentiment = emotionalAnalysisResult.sentiment;
+        }
+
+        SelectSentiment(sentiment);
+    }
+
+    // WebAPIの処理はFixedUpdateで行う
     private void FixedUpdate() {
         // アクセストークンの要求
         cotohaAccessToken.RequestAccessToken();
@@ -28,5 +44,30 @@ public class GameAdmin : MonoBehaviour {
             );
         }
     }
+
+    private void SelectSentiment(string sentiment) {
+        switch (sentiment) {
+            case Sentiment.Positive:
+                Debug.Log("ポジティブな処理");
+                break;
+            case Sentiment.Negative:
+                Debug.Log("ネガティブな処理");
+                break;
+            case Sentiment.Neutral:
+                Debug.Log("中立な処理");
+                break;
+            default:
+                Debug.Log("何もしない");
+                break;
+        }
+    }
+
+}
+
+public class Sentiment {
+
+    public const string Positive = "Positive";
+    public const string Negative = "Negative";
+    public const string Neutral = "Neutral";
 
 }

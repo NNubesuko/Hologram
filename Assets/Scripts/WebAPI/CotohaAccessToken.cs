@@ -23,8 +23,6 @@ public class CotohaAccessToken : MonoBehaviour {
         // 現在時刻が有効期限日に達していなければ、メソッドの処理を終了する
         if (now < effectiveDate) return;
 
-        Debug.Log("Hello");
-
         // アクセストークンを更新する必要があるため、現在のアクセストークンを無効であることにする
         validAccessToken = false;
 

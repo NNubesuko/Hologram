@@ -7,6 +7,8 @@ using UnityEngine.Networking;
 
 public class CotohaEmotionalAnalysis : MonoBehaviour {
 
+    public ResponceEmotionalAnalysis responceEmotionalAnalysis { get; private set; } = null;
+
     private const string url = "https://api.ce-cotoha.com/api/dev/nlp/v1/sentiment";
 
     /*
@@ -46,17 +48,17 @@ public class CotohaEmotionalAnalysis : MonoBehaviour {
      * 要求した感情分析結果のJsonをプログラムで扱えるようにクラスに変換するメソッド
      */
     private void ResponceEmotionalAnalysis(UnityWebRequest request) {
-        ResponceEmotionalAnalysis responceEmotionalAnalysis =
+        responceEmotionalAnalysis =
             JsonUtility.FromJson<ResponceEmotionalAnalysis>(request.downloadHandler.text);
 
         EmotionalAnalysisResult emotionalAnalysisResult = responceEmotionalAnalysis.result;
-        Debug.Log(emotionalAnalysisResult.sentiment);
-        Debug.Log(emotionalAnalysisResult.score);
+        // Debug.Log(emotionalAnalysisResult.sentiment);
+        // Debug.Log(emotionalAnalysisResult.score);
 
-        foreach (EmotionalAnalysisPhrase item in emotionalAnalysisResult.emotional_phrase) {
-            Debug.Log(item.form);
-            Debug.Log(item.emotion);
-        }
+        // foreach (EmotionalAnalysisPhrase item in emotionalAnalysisResult.emotional_phrase) {
+        //     Debug.Log(item.form);
+        //     Debug.Log(item.emotion);
+        // }
     }
 
 }
