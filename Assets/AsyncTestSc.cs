@@ -21,19 +21,8 @@ public class AsyncTestSc : MonoBehaviour {
 
     private Material material;
 
-    private List<byte> bytes = new List<byte>();
-
     private void Awake() {
         material = GetComponent<Renderer>().material;
-
-        for (int index = 0; index < size * size; index++) {
-            byte start = (byte)(index / (size * size) * 255.0);
-
-            bytes.Add(0);   // R
-            bytes.Add(0);   // G
-            bytes.Add(0);   // B
-            bytes.Add(0); // A
-        }
     }
 
     private void Update() {
