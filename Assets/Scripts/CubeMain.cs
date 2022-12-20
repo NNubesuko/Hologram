@@ -32,8 +32,8 @@ public class CubeMain : MonoBehaviour {
             Input.GetKeyDown(KeyCode.Return)
         );
 
-        rotateX = normalizeAngle(rotateX + 0.1f * magnification * Time.deltaTime, -180f, 180f);
-        rotateY = normalizeAngle(rotateY + 0.2f * magnification * Time.deltaTime, -180f, 180f);
+        rotateX = NormalizeAngle(rotateX + 0.1f * magnification * Time.deltaTime, -180f, 180f);
+        rotateY = NormalizeAngle(rotateY + 0.2f * magnification * Time.deltaTime, -180f, 180f);
         transform.rotation = Quaternion.Euler(rotateX, rotateY, 0f);
     }
 
@@ -61,14 +61,14 @@ public class CubeMain : MonoBehaviour {
             gameAdmin.fontSize,
             new FontFamily("游明朝"),
             Brushes.Black,
-            formatText(gameAdmin.inputText, gameAdmin.textLength)
+            FormatText(gameAdmin.inputText, gameAdmin.textLength)
         );
     }
 
     /*
      * 文字列をテクスチャ用にフォーマットするメソッド
      */
-    private string formatText(string text, int length) {
+    private string FormatText(string text, int length) {
         StringBuilder sb = new StringBuilder();
 
         while (sb.Length <= length) {
@@ -81,7 +81,7 @@ public class CubeMain : MonoBehaviour {
     /*
      * 角度を正規化するメソッド
      */
-    private float normalizeAngle(float x, float min, float max) {
+    private float NormalizeAngle(float x, float min, float max) {
         float cycle = max - min;
         x = (x - min) % cycle + min;
         if (x < min)
