@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,10 +9,8 @@ using KataokaLib.System;
 
 public class CubeMain : MonoBehaviour {
 
+    [SerializeField] private GameAdmin gameAdmin;
     [SerializeField] private RawImage rawImage;
-    [SerializeField] private int textureSize;
-    [SerializeField] private int fontSize;
-    [SerializeField, TextArea] private string text;
     [SerializeField] private float magnification;
 
     private Material material;
@@ -56,14 +55,27 @@ public class CubeMain : MonoBehaviour {
      */
     private Texture2D CreateTexture2D() {
         return CreateTexture.Create(
-            textureSize,
-            textureSize,
+            gameAdmin.textureSize,
+            gameAdmin.textureSize,
             Brushes.Transparent,
-            fontSize,
+            gameAdmin.fontSize,
             new FontFamily("游明朝"),
             Brushes.Black,
-            text
+            formatText(gameAdmin.inputText, gameAdmin.textLength)
         );
+    }
+
+    /*
+     * 文字列をテクスチャ用にフォーマットするメソッド
+     */
+    private string formatText(string text, int length) {
+        StringBuilder sb = new StringBuilder();
+
+        while (sb.Length <= length) {
+            sb.Append(text);
+        }
+
+        return sb.ToString();
     }
 
     /*

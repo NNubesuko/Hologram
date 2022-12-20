@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class GameAdmin : MonoBehaviour {
 
-    [SerializeField] private string inputString = "";
+    [SerializeField] private string input = "";
+    [SerializeField] private int length;
+    [SerializeField] private int size;
+    [SerializeField] private int font;
+
+    public string inputText { get; private set; }
+    public int textLength { get; private set; }
+    public int textureSize { get; private set; }
+    public int fontSize { get; private set; }
 
     private CotohaAccessToken cotohaAccessToken;
     private CotohaEmotionalAnalysis cotohaEmotionalAnalysis;
@@ -13,9 +21,18 @@ public class GameAdmin : MonoBehaviour {
 
     private string sentiment = "";
 
+    private void InitField() {
+        inputText = input;
+        textLength = length;
+        textureSize = size;
+        fontSize = font;
+    }
+
     private void Awake() {
         cotohaAccessToken = GetComponent<CotohaAccessToken>();
         cotohaEmotionalAnalysis = GetComponent<CotohaEmotionalAnalysis>();
+
+        InitField();
     }
 
     // その他判定はUpdateで行う
@@ -23,6 +40,8 @@ public class GameAdmin : MonoBehaviour {
         // todo: マイク入力完了に変更
         if (Input.GetKeyDown(KeyCode.Return)) {
             isInput = true;
+
+            InitField();
         }
 
         // 感情分析結果を格納するクラスから、感情を取得
@@ -48,7 +67,7 @@ public class GameAdmin : MonoBehaviour {
             // 渡された文章の感情分析
             cotohaEmotionalAnalysis.RequestEmotionalAnalysis(
                 cotohaAccessToken,
-                inputString
+                inputText
             );
         }
     }

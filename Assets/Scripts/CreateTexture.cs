@@ -41,6 +41,10 @@ public class CreateTexture {
 
     /*
      * ビットマップからテクスチャに変換するメソッド
+     *
+     * ビットマップをメモリに保存
+     * バッファを生成し、メモリからビットマップの情報を読み込む
+     * バッファからテクスチャを生成
      */
     private static Texture2D BitmapToTexture2D(Bitmap bitmap) {
         using (MemoryStream ms = new MemoryStream()) {
