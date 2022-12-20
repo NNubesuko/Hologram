@@ -21,6 +21,7 @@ public class GameAdmin : MonoBehaviour {
 
     private string sentiment = "";
 
+    // 削除予定
     private void InitField() {
         inputText = input;
         textLength = length;
