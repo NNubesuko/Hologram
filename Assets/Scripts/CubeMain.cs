@@ -19,6 +19,8 @@ public class CubeMain : MonoBehaviour {
     private float rotateX = 0f;
     private float rotateY = 0f;
 
+    private bool oneTime = true;
+
     private void Awake() {
         material = GetComponent<Renderer>().material;
     }
@@ -27,10 +29,14 @@ public class CubeMain : MonoBehaviour {
         // ゲーム開始時に一度だけ実行するメソッド
         // その後は、渡した条件式を通れば一度だけ実行される
         // todo: マイク入力完了に変更
-        methodUtility.OneTimeMethod(
-            Attach,
-            Input.GetKeyDown(KeyCode.Return)
-        );
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            oneTime = true;
+        }
+
+        if (oneTime) {
+            oneTime = false;
+            Attach();
+        }
 
         rotateX = NormalizeAngle(rotateX + 0.1f * magnification * Time.deltaTime, -180f, 180f);
         rotateY = NormalizeAngle(rotateY + 0.2f * magnification * Time.deltaTime, -180f, 180f);
@@ -41,20 +47,7 @@ public class CubeMain : MonoBehaviour {
      * 生成したテクスチャをオブジェクトに付けるメソッド
      */
     private void Attach() {
-        Texture2D attachTexture = CreateTexture2D();
-
-        // テスクチャを割り当てる前にフィルターモードをポイントに変更（文字の可読性を上げるため）
-        attachTexture.filterMode = FilterMode.Point;
-        attachTexture.Apply();
-
-        material.SetTexture("_BaseMap", attachTexture);
-    }
-
-    /*
-     * 渡された文字を描画したテクスチャを生成するメソッド
-     */
-    private Texture2D CreateTexture2D() {
-        return CreateTexture.Create(
+        Texture2D attachTexture = CreateTexture.Create(
             gameAdmin.textureSize,
             gameAdmin.textureSize,
             Brushes.Transparent,
@@ -63,6 +56,11 @@ public class CubeMain : MonoBehaviour {
             Brushes.Black,
             FormatText(gameAdmin.inputText, gameAdmin.textLength)
         );
+
+        attachTexture.filterMode = FilterMode.Point;
+        attachTexture.Apply();
+
+        material.SetTexture("_BaseMap", attachTexture);
     }
 
     /*
