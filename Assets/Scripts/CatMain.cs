@@ -10,9 +10,12 @@ using KataokaLib.System;
 public class CatMain : MonoBehaviour {
 
     [SerializeField] private GameAdmin gameAdmin;
+    [SerializeField] private float rotateMagnification;
 
     private Material material;
     private bool oneTime = true;
+
+    private float rotateY = 0f;
 
     private void Awake() {
         material = GetComponent<Renderer>().material;
@@ -27,6 +30,9 @@ public class CatMain : MonoBehaviour {
             oneTime = false;
             Attach();
         }
+
+        transform.rotation = Quaternion.Euler(0f, rotateY, 0f);
+        rotateY += rotateMagnification * Time.deltaTime;
     }
 
     /*
