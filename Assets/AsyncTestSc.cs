@@ -10,12 +10,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using KataokaLib.System;
 
-/*
- TODO: 新しい変換方法での非同期処理のテスト
- * 目標は、画面をフリーズさせることなく自然にテクスチャが変更されること
- ! 悪化するようであれば、テスト前の方法で対処する
- */
-
 public class AsyncTestSc : MonoBehaviour {
 
     [SerializeField] private string text;
