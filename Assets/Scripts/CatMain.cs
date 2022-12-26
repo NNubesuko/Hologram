@@ -7,18 +7,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using KataokaLib.System;
 
-public class CubeMain : MonoBehaviour {
+public class CatMain : MonoBehaviour {
 
     [SerializeField] private GameAdmin gameAdmin;
-    [SerializeField] private RawImage rawImage;
-    [SerializeField] private float magnification;
 
     private Material material;
-    private SpecialMethodUtility methodUtility = new SpecialMethodUtility();
-
-    private float rotateX = 0f;
-    private float rotateY = 0f;
-
     private bool oneTime = true;
 
     private void Awake() {
@@ -26,9 +19,6 @@ public class CubeMain : MonoBehaviour {
     }
 
     private void Update() {
-        // ゲーム開始時に一度だけ実行するメソッド
-        // その後は、渡した条件式を通れば一度だけ実行される
-        // todo: マイク入力完了に変更
         if (Input.GetKeyDown(KeyCode.Return)) {
             oneTime = true;
         }
@@ -37,10 +27,6 @@ public class CubeMain : MonoBehaviour {
             oneTime = false;
             Attach();
         }
-
-        rotateX = NormalizeAngle(rotateX + 0.1f * magnification * Time.deltaTime, -180f, 180f);
-        rotateY = NormalizeAngle(rotateY + 0.2f * magnification * Time.deltaTime, -180f, 180f);
-        transform.rotation = Quaternion.Euler(rotateX, rotateY, 0f);
     }
 
     /*
@@ -74,17 +60,6 @@ public class CubeMain : MonoBehaviour {
         }
 
         return sb.ToString();
-    }
-
-    /*
-     * 角度を正規化するメソッド
-     */
-    private float NormalizeAngle(float x, float min, float max) {
-        float cycle = max - min;
-        x = (x - min) % cycle + min;
-        if (x < min)
-            x += cycle;
-        return x;
     }
 
 }
