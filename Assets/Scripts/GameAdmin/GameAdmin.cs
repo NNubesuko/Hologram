@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KataokaLib.System;
 
 public class GameAdmin : MonoBehaviour {
 
@@ -54,6 +55,10 @@ public class GameAdmin : MonoBehaviour {
         }
 
         SelectSentiment(sentiment);
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            GameAdministrator.QuitGame();
+        }
     }
 
     // WebAPIの処理はFixedUpdateで行う
